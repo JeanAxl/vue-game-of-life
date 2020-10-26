@@ -1,8 +1,8 @@
 <template>
   <h2>Game of life</h2>
   <div id="grid" class="grid" :style="styleObject">
-    <template v-for="a in grid" v-bind:key="a.id">
-      <div class="cell" :class="{ alive: a.content === 0 }" />
+    <template v-for="cell in grid" v-bind:key="cell.id">
+      <div class="cell" :class="{ alive: cell.content === 1 }" />
     </template>
   </div>
 </template>
@@ -19,11 +19,6 @@ export default {
         gridTemplateColumns: `repeat(${this.gridDimensions.height}, ${CELL_SIZE}px)`,
         gridTemplateRows: `repeat(${this.gridDimensions.width}, ${CELL_SIZE}px)`
       };
-    }
-  },
-  watch: {
-    grid() {
-      console.log("Received new Grid : ", Date.now());
     }
   }
 };

@@ -5,6 +5,7 @@
     <button @click="handleClickPlay">start</button>
     <button>pause</button>
     <button @click="handleClickStop">stop</button>
+    <button @click="this.$emit('next')">next</button>
   </div>
 </template>
 

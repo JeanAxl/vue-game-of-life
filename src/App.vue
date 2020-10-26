@@ -1,5 +1,6 @@
 <template>
   <h3>Dimension {{ config.cellsByColumn }} by {{ config.cellsByRow }} grid.</h3>
+
   <Grid
     :grid="grid"
     :cellsByRow="config.cellsByRow"
@@ -11,6 +12,7 @@
     @update:config="onConfigUpdate($event)"
     @play="play"
     @stop="stop"
+    @next="next"
   />
 </template>
 
@@ -19,6 +21,8 @@ import { Options, Vue } from "vue-class-component";
 
 import { CellGrid, GameOfLife } from "@/domain/GameOfLife";
 import { Cell } from "@/domain/Cell";
+
+import { run } from "@/domain/Benchmarks";
 
 import Grid from "./components/Grid.vue";
 import Configuration from "./components/Configuration.vue";
@@ -29,12 +33,22 @@ type ConfigType = {
   cellsByColumn: number;
 };
 
-function formatGrid(grid: CellGrid): { id: string; content: Cell }[] {
-  const a: [string, Cell][] = Array.from(grid.entries());
-  return a.map((value: [string, Cell]) => ({
-    id: value[0],
-    content: value[1]
-  }));
+function formatGrid(
+  grid: CellGrid,
+  width: number,
+  height: number
+): { id: string; content: Cell }[] {
+  const newGrid = [];
+  for (let column = 0; column < width; column++) {
+    for (let row = 0; row < height; row++) {
+      newGrid.push({
+        id: column + ":" + row,
+        content: grid[column][row]
+      });
+    }
+  }
+
+  return newGrid;
 }
 
 const randomCellGenerator = (n: number): (() => Cell) => () =>
@@ -67,6 +81,9 @@ const randomCellGenerator = (n: number): (() => Cell) => () =>
     play() {
       this.running = true;
     },
+    next() {
+      this.gol.nextGeneration();
+    },
     onConfigUpdate(event: ConfigType) {
       if (!this.running) {
         this.config = event;
@@ -83,8 +100,9 @@ const randomCellGenerator = (n: number): (() => Cell) => () =>
   },
   computed: {
     grid() {
-      const grid: CellGrid = this.gol.getGrid();
-      return formatGrid(grid);
+      const grid = this.gol.getGrid();
+      const { width, height } = this.gol.getDimensions();
+      return formatGrid(grid, width, height);
     },
     gridDimensions() {
       return this.gol.getDimensions();
@@ -96,16 +114,11 @@ const randomCellGenerator = (n: number): (() => Cell) => () =>
       this.config.cellsByColumn,
       randomCellGenerator(4)
     );
-
-    this.gol.setCell(4, 4, Cell.ALIVE);
-    this.gol.setCell(4, 6, Cell.ALIVE);
-    this.gol.setCell(4, 5, Cell.ALIVE);
-
     setInterval(() => {
       if (this.running) {
         this.gol.nextGeneration();
       }
-    }, 200);
+    }, 50);
   }
 })
 export default class App extends Vue {}

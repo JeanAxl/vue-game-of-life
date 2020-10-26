@@ -1,15 +1,15 @@
-import { GameOfLife, GameOfLifeArray } from "./GameOfLife";
+import { GameOfLife } from "./GameOfLife";
 import { Cell } from "@/domain/Cell";
 
 describe("Array implementation", () => {
   it("inits grid in constructor", () => {
-    const gol = new GameOfLifeArray();
+    const gol = new GameOfLife();
     const result = gol.getGrid();
-    expect(result).toEqual([[]]);
+    expect(result).toEqual([]);
   });
 
   it("has an init function with only dead cells", () => {
-    const gol = new GameOfLifeArray();
+    const gol = new GameOfLife();
     gol.init(4, 4);
     const result = gol.getGrid();
     expect(result[3][3]).toBe(Cell.DEAD);
@@ -18,54 +18,14 @@ describe("Array implementation", () => {
   });
 
   it("can set cell", () => {
-    const gol = new GameOfLifeArray();
+    const gol = new GameOfLife();
     gol.init(4, 4);
     gol.setCell(3, 3, Cell.ALIVE);
     const grid = gol.getGrid();
-    expect();
-  });
-});
-
-describe("Game of life utils", () => {
-  it("Can be init", () => {
-    const gameOfLife = new GameOfLife();
-    const result = gameOfLife.getGrid();
-
-    expect(result).toEqual(new Map());
+    expect(grid[3][3]).toBe(Cell.ALIVE);
   });
 
-  it("Can get and set cell", () => {
-    const gameOfLife = new GameOfLife();
-    gameOfLife.setCell(0, 0, Cell.ALIVE);
-    const result = gameOfLife.getCell(0, 0);
-
-    expect(result).toEqual(Cell.ALIVE);
-  });
-
-  it("Can init with height and width", () => {
-    const gameOfLife = new GameOfLife();
-
-    gameOfLife.init(4, 3);
-
-    const size = gameOfLife.getGridSize();
-    const cell = gameOfLife.getCell(3, 2);
-
-    expect(size).toBe(12);
-    expect(cell).toEqual(Cell.DEAD);
-  });
-  it("Can retrieve  height and width", () => {
-    const gameOfLife = new GameOfLife();
-
-    gameOfLife.init(4, 3);
-    const { width, height } = gameOfLife.getDimensions();
-
-    expect(width).toBe(4);
-    expect(height).toBe(3);
-  });
-});
-
-describe("Game of life, life and death rules", () => {
-  it("Dead cell gets Alive if it has 3 neighbors", () => {
+  it("Array : Dead cell gets Alive if it has 3 neighbors", () => {
     const firstCase = () => {
       const gameOfLife = new GameOfLife();
 

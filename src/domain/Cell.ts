@@ -1,4 +1,4 @@
 export enum Cell {
-  ALIVE,
-  DEAD
+  DEAD,
+  ALIVE
 }
