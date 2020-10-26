@@ -1,5 +1,30 @@
-import { GameOfLife } from "./GameOfLife";
+import { GameOfLife, GameOfLifeArray } from "./GameOfLife";
 import { Cell } from "@/domain/Cell";
+
+describe("Array implementation", () => {
+  it("inits grid in constructor", () => {
+    const gol = new GameOfLifeArray();
+    const result = gol.getGrid();
+    expect(result).toEqual([[]]);
+  });
+
+  it("has an init function with only dead cells", () => {
+    const gol = new GameOfLifeArray();
+    gol.init(4, 4);
+    const result = gol.getGrid();
+    expect(result[3][3]).toBe(Cell.DEAD);
+    expect(result[0][0]).toBe(Cell.DEAD);
+    expect(result[3][4]).toBeUndefined();
+  });
+
+  it("can set cell", () => {
+    const gol = new GameOfLifeArray();
+    gol.init(4, 4);
+    gol.setCell(3, 3, Cell.ALIVE);
+    const grid = gol.getGrid();
+    expect();
+  });
+});
 
 describe("Game of life utils", () => {
   it("Can be init", () => {

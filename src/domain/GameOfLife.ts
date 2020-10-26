@@ -101,5 +101,29 @@ class GameOfLife {
     this.grid = newCellGrid;
   }
 }
+type ArrayGrid = Cell[][];
+class GameOfLifeArray {
+  private grid: ArrayGrid;
 
-export { GameOfLife, CellGrid };
+  constructor() {
+    this.grid = [[]];
+  }
+
+  init(height: number, width: number) {
+    const newGrid: ArrayGrid = [];
+    for (let row = 0; row < height; row++) {
+      newGrid[row] = [];
+      for (let column = 0; column < width; column++) {
+        newGrid[row][column] = Cell.DEAD;
+      }
+    }
+
+    this.grid = newGrid;
+  }
+
+  getGrid(): ArrayGrid {
+    return this.grid;
+  }
+}
+
+export { GameOfLife, GameOfLifeArray, CellGrid };
